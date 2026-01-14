@@ -1,0 +1,96 @@
+### Тестирование через Firebase Emulator
+### Запустите сначала: npm run serve
+
+### 1. Создать сказку
+POST http://localhost:5001/fairytales-app/europe-west1/createFairyTale
+Content-Type: application/json
+
+{
+  "data": {
+    "title": "Приключения храброго рыцаря",
+    "components": {
+      "hero": {
+        "name": "Артур",
+        "type": "knight"
+      },
+      "friends": [
+        {
+          "name": "Мерлин",
+          "type": "wizard"
+        }
+      ],
+      "equipment": [
+        {
+          "name": "Экскалибур",
+          "description": "Легендарный меч"
+        }
+      ],
+      "villains": [
+        {
+          "name": "Моргана",
+          "type": "witch"
+        }
+      ],
+      "places": [
+        {
+          "name": "Камелот",
+          "kind": "замок"
+        }
+      ]
+    }
+  }
+}
+
+### 2. Сгенерировать текст сказки (используйте taleId из предыдущего ответа)
+POST http://localhost:5001/fairytales-app/europe-west1/generateTaleContent
+Content-Type: application/json
+
+{
+  "data": {
+    "taleId": "YOUR_TALE_ID_HERE"
+  }
+}
+
+### 3. Обновить сказку (используйте taleId из предыдущего ответа)
+POST http://localhost:5001/fairytales-app/europe-west1/updateFairyTale
+Content-Type: application/json
+
+{
+  "data": {
+    "taleId": "YOUR_TALE_ID_HERE",
+    "title": "Новое название сказки",
+    "components": {
+      "hero": {
+        "name": "Ланселот",
+        "type": "knight"
+      }
+    }
+  }
+}
+
+### 4. Получить все сказки пользователя
+POST http://localhost:5001/fairytales-app/europe-west1/getUserTales
+Content-Type: application/json
+
+{
+  "data": {
+    "limit": 10
+  }
+}
+
+### 5. Удалить сказку
+POST http://localhost:5001/fairytales-app/europe-west1/deleteFairyTale
+Content-Type: application/json
+
+{
+  "data": {
+    "taleId": "YOUR_TALE_ID_HERE"
+  }
+}
+
+### PRODUCTION ENDPOINTS (после deploy)
+### https://europe-west1-fairytales-app.cloudfunctions.net/createFairyTale
+### https://europe-west1-fairytales-app.cloudfunctions.net/generateTaleContent
+### https://europe-west1-fairytales-app.cloudfunctions.net/updateFairyTale
+### https://europe-west1-fairytales-app.cloudfunctions.net/getUserTales
+### https://europe-west1-fairytales-app.cloudfunctions.net/deleteFairyTale

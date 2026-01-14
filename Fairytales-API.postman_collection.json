@@ -1,0 +1,144 @@
+{
+  "info": {
+    "name": "Fairytales API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://europe-west1-fairytales-app.cloudfunctions.net",
+      "type": "string"
+    },
+    {
+      "key": "idToken",
+      "value": "YOUR_ID_TOKEN_HERE",
+      "type": "string"
+    },
+    {
+      "key": "taleId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{idToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "1. Create Fairy Tale",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if (pm.response.code === 200) {",
+              "    const jsonData = pm.response.json();",
+              "    if (jsonData.result && jsonData.result.taleId) {",
+              "        pm.collectionVariables.set('taleId', jsonData.result.taleId);",
+              "        console.log('Tale ID saved:', jsonData.result.taleId);",
+              "    }",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"data\": {\n    \"title\": \"Приключения храброго рыцаря\",\n    \"components\": {\n      \"hero\": {\n        \"name\": \"Артур\",\n        \"type\": \"knight\"\n      },\n      \"friends\": [\n        {\n          \"name\": \"Мерлин\",\n          \"type\": \"wizard\"\n        }\n      ],\n      \"equipment\": [\n        {\n          \"name\": \"Экскалибур\",\n          \"description\": \"Легендарный меч\"\n        }\n      ],\n      \"villains\": [\n        {\n          \"name\": \"Моргана\",\n          \"type\": \"witch\"\n        }\n      ],\n      \"places\": [\n        {\n          \"name\": \"Камелот\",\n          \"kind\": \"замок\"\n        }\n      ]\n    }\n  }\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/createFairyTale",
+          "host": ["{{baseUrl}}"],
+          "path": ["createFairyTale"]
+        },
+        "description": "Создает новую сказку. Tale ID автоматически сохраняется в переменную для следующих запросов."
+      },
+      "response": []
+    },
+    {
+      "name": "2. Generate Tale Content",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"data\": {\n    \"taleId\": \"{{taleId}}\"\n  }\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/generateTaleContent",
+          "host": ["{{baseUrl}}"],
+          "path": ["generateTaleContent"]
+        },
+        "description": "Генерирует текст сказки через n8n webhook. Использует taleId из предыдущего запроса."
+      },
+      "response": []
+    },
+    {
+      "name": "3. Get User Tales",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"data\": {\n    \"limit\": 10\n  }\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/getUserTales",
+          "host": ["{{baseUrl}}"],
+          "path": ["getUserTales"]
+        },
+        "description": "Получает список всех сказок пользователя."
+      },
+      "response": []
+    },
+    {
+      "name": "4. Delete Fairy Tale",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"data\": {\n    \"taleId\": \"{{taleId}}\"\n  }\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/deleteFairyTale",
+          "host": ["{{baseUrl}}"],
+          "path": ["deleteFairyTale"]
+        },
+        "description": "Удаляет сказку по ID."
+      },
+      "response": []
+    }
+  ]
+}
