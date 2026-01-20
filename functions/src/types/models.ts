@@ -19,11 +19,13 @@ export enum EntityType {
 export interface Hero {
   name: string;
   type: EntityType;
+  description?: string;
 }
 
 export interface Friend {
   name: string;
   type: EntityType;
+  description?: string;
 }
 
 export interface Equipment {
@@ -34,11 +36,13 @@ export interface Equipment {
 export interface Villain {
   name: string;
   type: EntityType;
+  description?: string;
 }
 
 export interface Place {
   name: string;
   kind: string;
+  description?: string;
 }
 
 export interface FairyTaleComponents {
@@ -69,7 +73,9 @@ export interface FairyTale {
   components: FairyTaleComponents;
   taleStyle: {
     style: string;
+    description?: string;
   };
+  language: string;
   createdAt: Timestamp;
   updatedAt: Timestamp;
 }
@@ -79,6 +85,7 @@ export interface CreateTaleRequest {
   components: FairyTaleComponents;
   taleStyle: {
     style: string;
+    description?: string;
   };
 }
 
@@ -100,4 +107,55 @@ export interface UpdateUserPreferencesRequest {
   language?: string;
   timezone?: string;
   allowNotifications?: boolean;
+}
+
+// ============================================
+// OBJECTS CATALOG
+// ============================================
+
+export interface Translation {
+  title: string;
+  description: string;
+}
+
+export interface ObjectTranslations {
+  en: Translation;
+  ru: Translation;
+  de: Translation;
+  [key: string]: Translation; // Allow other languages
+}
+
+export type ObjectCategory = 'hero' | 'friend' | 'villain' | 'place' | 'equipment' | 'style';
+
+export interface FairyTaleObject {
+  id: string;
+  category: ObjectCategory;
+  imageUrl: string;
+  sortOrder: number;
+  isActive: boolean;
+  translations: ObjectTranslations;
+  createdAt: Timestamp;
+  updatedAt: Timestamp;
+}
+
+export interface LocalizedObject {
+  id: string;
+  category: ObjectCategory;
+  imageUrl: string;
+  sortOrder: number;
+  title: string;
+  description: string;
+}
+
+export interface GetObjectsRequest {
+  language: string;
+}
+
+export interface GetObjectsResponse {
+  heroes: LocalizedObject[];
+  friends: LocalizedObject[];
+  villains: LocalizedObject[];
+  places: LocalizedObject[];
+  equipment: LocalizedObject[];
+  taleStyles: LocalizedObject[];
 }

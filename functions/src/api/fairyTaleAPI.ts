@@ -36,7 +36,9 @@ export const createFairyTale = functions.region(FIREBASE_REGION).https.onCall(
     if (!userDoc.exists) {
       throw new functions.https.HttpsError('not-found', 'User profile not found');
     }
-    const userName = userDoc.data()?.userName || 'Anonymous';
+    const userData = userDoc.data();
+    const userName = userData?.userName || 'Anonymous';
+    const userLanguage = userData?.language || 'en';
 
     const taleRef = db.collection('fairyTales').doc();
     const newTale = {
@@ -54,7 +56,9 @@ export const createFairyTale = functions.region(FIREBASE_REGION).https.onCall(
       },
       taleStyle: {
         style: data.taleStyle.style.trim(),
+        description: data.taleStyle.description || '',
       },
+      language: userLanguage,
       createdAt: admin.firestore.Timestamp.now(),
       updatedAt: admin.firestore.Timestamp.now(),
     };
@@ -276,7 +280,7 @@ async function generateAndSave(taleId: string, tale: FairyTale): Promise<void> {
 
 async function generateStoryWithAI(
   components: FairyTaleComponents, 
-  taleStyle: { style: string }
+  taleStyle: { style: string; description?: string }
 ): Promise<string> {
   const webhookUrl = 'https://n8n.fairyfy.xyz/webhook/ac502c37-56b8-4241-ba8a-7e82ee932cfb';
   

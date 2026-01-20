@@ -18,5 +18,9 @@ export {
 } from './api/userAPI';
 
 export {
+  getAvailableObjects,
+} from './api/objectsAPI';
+
+export {
   onUserCreated,
 } from './triggers/authTriggers';
