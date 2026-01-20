@@ -99,7 +99,7 @@ export const generateTaleContent = functions
       }
 
       // Validate required fields
-      if (!tale.components.hero || !tale.components.hero.name) {
+      if (!tale.components.hero || !tale.components.hero.title) {
         throw new functions.https.HttpsError('failed-precondition', 'Hero is required for generation');
       }
 

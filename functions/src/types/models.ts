@@ -7,42 +7,29 @@ export enum FairyTaleStatus {
   FAILED = 'FAILED'
 }
 
-export enum EntityType {
-  KNIGHT = 'knight',
-  WIZARD = 'wizard',
-  PRINCESS = 'princess',
-  FAIRY = 'fairy',
-  DRAGON = 'dragon',
-  WITCH = 'witch',
-}
-
 export interface Hero {
-  name: string;
-  type: EntityType;
-  description?: string;
+  title: string;
+  description: string;
 }
 
 export interface Friend {
-  name: string;
-  type: EntityType;
-  description?: string;
+  title: string;
+  description: string;
 }
 
 export interface Equipment {
-  name: string;
-  description?: string;
+  title: string;
+  description: string;
 }
 
 export interface Villain {
-  name: string;
-  type: EntityType;
-  description?: string;
+  title: string;
+  description: string;
 }
 
 export interface Place {
-  name: string;
-  kind: string;
-  description?: string;
+  title: string;
+  description: string;
 }
 
 export interface FairyTaleComponents {
